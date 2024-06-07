@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 
 class ServiciosController extends Controller
 {
-    public function servicios(){
-       /*
+
+    public function index()
+    {
+
         $servicios = [
-            ['titulo' => 'servicio 02'],
-            ['titulo' => 'servicio 01'],
-            ['titulo' => 'servicio 03'],
-            ['titulo' => 'servicio 04'],
-            ['titulo' => 'servicio 05'],
-            
+            ['titulo' => 'Mantenimiento'],
+            ['titulo' => 'Afinamiento'],
+            ['titulo' => 'Cambio de Aceite'],
+            ['titulo' => 'Lavado tipo salón'],
+
         ];
-        return view('servicios',compact('servicios'));
-        */
+        return view('servicios', compact('servicios'));
+
     }
 }

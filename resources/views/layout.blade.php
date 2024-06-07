@@ -20,9 +20,9 @@
     <nav class="navbar">
         <table class="table">
             @include('partials.nav')
-            @yield('content')
         </table>
     </nav>
+    @yield('content')
 </body>
 
 </html>
