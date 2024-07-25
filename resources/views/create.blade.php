@@ -7,7 +7,9 @@
         <tr>
             <th colspan="4">Crear nuevo servicio</th>
         </tr>
-        <form action="{{ route('servicios.store') }}" method="post">
+        {{-- @include('partials.validation-errors') --}}
+        <form action="{{ route('servicios.store') }}" method="post" enctype="multipart/form-data">
+            @include('partials.form', ['btnTextl' => 'Guardar'])
             @csrf
             <tr>
                 <th>Titulo</th>

@@ -8,6 +8,7 @@ use App\Models\Servicio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\CreateServicioRequest;
 
 class ServiciosController extends Controller
 {
@@ -39,10 +40,15 @@ class ServiciosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateServicioRequest $request)
     {
+        $servicio = new Servicio($request->validated());
+        $servicio->image = $request->file('image')->store('images');
+        $servicio->save();
 
-        $request->validate([
+        return redirect()->route('servicios.index')->with('estado', 'Servicio creado con exito');
+
+        /*         $request->validate([
             'titulo' => 'required',
             'descripcion' => 'required'
         ]);
@@ -52,7 +58,7 @@ class ServiciosController extends Controller
             'descripcion' => request('descripcion')
         ]);
 
-        return redirect()->route('servicios.index');
+        return redirect()->route('servicios.index'); */
     }
 
     /**
