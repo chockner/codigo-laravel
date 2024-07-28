@@ -21,16 +21,24 @@
                 <td>
                     @if ($servicio->image)
                         {{-- <img src="storage/{{ $servicio->image }}" alt="{{ $servicio->titulo }}" width="50" height="50"> --}}
-                        <img src="{{ asset('storage/' . $servicio->image) }}" alt="{{ $servicio->titulo }}" width="50"
-                            height="50">
+                        {{-- <img src="{{ asset('storage/' . $servicio->image) }}" alt="{{ $servicio->titulo }}" width="50"
+                            height="50"> --}}
+                        <div class="card" style="width: 18rem;">
+                            <img src="storage/{{ $servicio->image }}" alt="{{ $servicio->titulo }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $servicio->titulo }}</h5>
+                                <p class="card-text">{{ $servicio->descripcion }}</p>
+                                <a href="{{ route('servicios.show', $servicio) }}" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
                     @endif
                 </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td colspan="4">
                     <a href="{{ route('servicios.show', $servicio) }}">{{ $servicio->titulo }}</a>
                 </td>
-            </tr><br>
+            </tr><br> --}}
         @endforeach
     @else
         <li>No existe ningun servicios</li>
