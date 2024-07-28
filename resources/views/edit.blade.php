@@ -12,8 +12,9 @@
         @endauth
 
 
-        <form action="{{ route('servicios.update', $servicio) }}" method="post">
-            @csrf @method('PATCH')
+        <form action="{{ route('servicios.update', $servicio->id) }}" method="post" enctype="multipart/form-data">
+            @include('partials.form', ['btnText' => 'Actualizar'])>
+            @csrf @method('PUT')
             <tr>
                 <th>Titulo</th>
                 <td><input type="text" name="titulo" value="{{ old('titulo', $servicio->titulo) }}"></td>

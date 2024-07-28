@@ -4,7 +4,11 @@
 
 @section('content')
 
-
+    <tr>
+        <td>
+            <img src="{{ asset('storage/' . $servicio->image) }}" alt="{{ $servicio->titulo }}" width="100" height="100">
+        </td>
+    </tr>
     <tr>
         <td colspan="4">{{ $servicio->descripcion }}</td>
     </tr>

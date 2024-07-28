@@ -9,7 +9,7 @@
         </tr>
         {{-- @include('partials.validation-errors') --}}
         <form action="{{ route('servicios.store') }}" method="post" enctype="multipart/form-data">
-            @include('partials.form', ['btnTextl' => 'Guardar'])
+            @include('partials.form', ['btnText' => 'Guardar'])
             @csrf
             <tr>
                 <th>Titulo</th>

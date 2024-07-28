@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Artisan;
 
 
 Route::view('/', 'home')->name('home');
@@ -32,3 +33,7 @@ Auth::routes();
 
 /* Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); */
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});

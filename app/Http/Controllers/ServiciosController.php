@@ -8,6 +8,7 @@ use App\Models\Servicio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateServicioRequest;
 
 class ServiciosController extends Controller
@@ -74,18 +75,25 @@ class ServiciosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Servicio $id)
+    /* public function edit(Servicio $id)
     {
         return view('edit', [
             'servicio' => $id
         ]);
+    } */
+    public function edit(Servicio $servicio)
+    {
+        return view('edit', compact('servicio'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Servicio $id)
+    /* public function update(Request $request, Servicio $id)
     {
+
+
         $request->validate([
             'titulo' => 'required',
             'descripcion' => 'required'
@@ -96,7 +104,37 @@ class ServiciosController extends Controller
             'descripcion' => request('descripcion')
         ]);
         return redirect()->route('servicios.show', $id);
+    } */
+
+    public function update(Request $request, Servicio $servicio)
+    {
+        $request->validate([
+            'titulo' => 'required',
+            'descripcion' => 'required'
+        ]);
+
+        /* $servicio->update($request->only(['titulo', 'descripcion']));
+
+        return redirect()->route('servicios.show', $servicio->id); */
+
+        // Si se ha subido una nueva imagen
+        if ($request->hasFile('image')) {
+            // Elimina la imagen anterior si existe
+            if ($servicio->image) {
+                Storage::delete($servicio->image);
+            }
+            // Guarda la nueva imagen
+            $servicio->image = $request->file('image')->store('images');
+            $servicio->save();
+        }
+
+        return redirect()->route('servicios.show', $servicio->id)
+            ->with('estado', 'Servicio actualizado con éxito');
     }
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
