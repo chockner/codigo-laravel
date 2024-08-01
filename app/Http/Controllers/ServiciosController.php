@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Servicio;
-use Illuminate\Support\Facades\DB;
+/* use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator; */
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateServicioRequest;
-use Intervention\Image\Facades\Images;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 class ServiciosController extends Controller
 {
@@ -65,7 +66,7 @@ class ServiciosController extends Controller
         return view('edit', compact('servicio'));
     }
 
-    public function update(Request $request, Servicio $servicio)
+    /*     public function update(Request $request, Servicio $servicio)
     {
         $request->validate([
             'titulo' => 'required',
@@ -82,10 +83,44 @@ class ServiciosController extends Controller
             $servicio->image = $request->file('image')->store('images');
             $servicio->save();
         }
+        return redirect()->route('servicios.show', $servicio->id)
+            ->with('estado', 'Servicio actualizado con éxito');
+    } */
+
+    public function update(Request $request, Servicio $servicio)
+    {
+        $request->validate([
+            'titulo' => 'required',
+            'descripcion' => 'required'
+        ]);
+
+        // Si se ha subido una nueva imagen
+        if ($request->hasFile('image')) {
+            // Elimina la imagen anterior si existe
+            if ($servicio->image) {
+                Storage::delete($servicio->image);
+            }
+
+            // Procesa y guarda la nueva imagen
+            $image = $request->file('image');
+            $filename = $image->hashName();
+
+            // Redimensiona la imagen y limita los colores
+            $processedImage = Image::make($image)
+                ->widen(800) // Cambia el ancho, puedes ajustarlo según tus necesidades
+                ->limitColors(255)
+                ->encode();
+
+            // Guarda la imagen procesada
+            Storage::put('public/images/' . $filename, $processedImage);
+            $servicio->image = 'images/' . $filename;
+            $servicio->save();
+        }
 
         return redirect()->route('servicios.show', $servicio->id)
             ->with('estado', 'Servicio actualizado con éxito');
     }
+
 
     /**
      * Remove the specified resource from storage.

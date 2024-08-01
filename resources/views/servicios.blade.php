@@ -28,17 +28,12 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $servicio->titulo }}</h5>
                                 <p class="card-text">{{ $servicio->descripcion }}</p>
-                                <a href="{{ route('servicios.show', $servicio) }}" class="btn btn-primary">Go somewhere</a>
+                                <a href="{{ route('servicios.show', $servicio) }}" class="btn btn-primary">Detalles</a>
                             </div>
                         </div>
                     @endif
                 </td>
             </tr>
-            {{-- <tr>
-                <td colspan="4">
-                    <a href="{{ route('servicios.show', $servicio) }}">{{ $servicio->titulo }}</a>
-                </td>
-            </tr><br> --}}
         @endforeach
     @else
         <li>No existe ningun servicios</li>
