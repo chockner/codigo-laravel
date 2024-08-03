@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Servicio;
-/* use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator; */
+
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateServicioRequest;
-use Intervention\Image\ImageManagerStatic as Image;
 
+use Intervention\Image\Laravel\Facades\Image;
+
+use App\Events\ServicioSaved;
 
 class ServiciosController extends Controller
 {
@@ -66,27 +66,6 @@ class ServiciosController extends Controller
         return view('edit', compact('servicio'));
     }
 
-    /*     public function update(Request $request, Servicio $servicio)
-    {
-        $request->validate([
-            'titulo' => 'required',
-            'descripcion' => 'required'
-        ]);
-
-        // Si se ha subido una nueva imagen
-        if ($request->hasFile('image')) {
-            // Elimina la imagen anterior si existe
-            if ($servicio->image) {
-                Storage::delete($servicio->image);
-            }
-            // Guarda la nueva imagen
-            $servicio->image = $request->file('image')->store('images');
-            $servicio->save();
-        }
-        return redirect()->route('servicios.show', $servicio->id)
-            ->with('estado', 'Servicio actualizado con éxito');
-    } */
-
     public function update(Request $request, Servicio $servicio)
     {
         $request->validate([
@@ -98,7 +77,7 @@ class ServiciosController extends Controller
         if ($request->hasFile('image')) {
             // Elimina la imagen anterior si existe
             if ($servicio->image) {
-                Storage::delete($servicio->image);
+                Storage::delete('public/' . $servicio->image);
             }
 
             // Procesa y guarda la nueva imagen
@@ -106,16 +85,22 @@ class ServiciosController extends Controller
             $filename = $image->hashName();
 
             // Redimensiona la imagen y limita los colores
-            $processedImage = Image::make($image)
-                ->widen(800) // Cambia el ancho, puedes ajustarlo según tus necesidades
-                ->limitColors(255)
+            $processedImage = Image::read($image)
+                /* ->resize(800) */ // Cambia el ancho, puedes ajustarlo según tus necesidades
+                /* ->limitColors(255) */
                 ->encode();
 
             // Guarda la imagen procesada
             Storage::put('public/images/' . $filename, $processedImage);
             $servicio->image = 'images/' . $filename;
-            $servicio->save();
         }
+
+        $servicio->titulo = $request->titulo;
+        $servicio->descripcion = $request->descripcion;
+        $servicio->save();
+
+        // Disparar el evento después de guardar el servicio
+        ServicioSaved::dispatch($servicio);
 
         return redirect()->route('servicios.show', $servicio->id)
             ->with('estado', 'Servicio actualizado con éxito');
