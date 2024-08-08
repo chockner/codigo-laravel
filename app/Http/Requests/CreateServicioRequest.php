@@ -23,14 +23,20 @@ class CreateServicioRequest extends FormRequest
     {
         return [
             'titulo' => 'required',
-            'descripcion' => 'required'
+            'descripcion' => 'required',
+            'category_id' => [
+                'required',
+                'exists:categorires,id'
+            ]
         ];
     }
     public function messages()
     {
         return [
             'titulo.required' => 'Se necesita un titulo para el sevicio',
+            'category_id.required' => 'Seleccione una categoria para el servicio',
             'descripcion.required' => 'Ingresa una descripcion, es necesaria'
+
 
         ];
     }
