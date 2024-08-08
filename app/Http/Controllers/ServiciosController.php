@@ -12,6 +12,7 @@ use App\Http\Requests\CreateServicioRequest;
 use Intervention\Image\Laravel\Facades\Image;
 
 use App\Events\ServicioSaved;
+use App\Models\Category;
 
 class ServiciosController extends Controller
 {
@@ -37,7 +38,10 @@ class ServiciosController extends Controller
      */
     public function create()
     {
-        return view('create');
+        // Extraer categorías usando el método pluck
+        $categories = Category::pluck('name', 'id');
+        /* return view('create'); */
+        return view('create', compact('categories'));
     }
 
     /**
@@ -63,7 +67,8 @@ class ServiciosController extends Controller
     }
     public function edit(Servicio $servicio)
     {
-        return view('edit', compact('servicio'));
+        $categories = Category::pluck('name', 'id');
+        return view('edit', compact('servicio', 'categories'));
     }
 
     public function update(Request $request, Servicio $servicio)
