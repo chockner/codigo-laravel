@@ -32,24 +32,6 @@
                 @endforeach
             </div>
         </div>
-        {{-- 
-        @foreach ($servicios as $servicio)
-            <tr>
-                <td>
-                    @if ($servicio->image)
-                        <div class="card" style="width: 18rem;">
-                            <img src="storage/{{ $servicio->image }}" alt="{{ $servicio->titulo }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $servicio->titulo }}</h5>
-                                <p class="card-text">{{ $servicio->descripcion }}</p>
-                                <a href="{{ route('servicios.show', $servicio) }}" class="btn btn-primary">Detalles</a>
-                            </div>
-                        </div>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
- --}}
     @else
         <li>No existe ningun servicios</li>
     @endif
