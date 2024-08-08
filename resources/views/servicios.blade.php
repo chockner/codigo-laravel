@@ -16,13 +16,27 @@
     </tr>
 
     @if ($servicios)
+        <div class="container">
+            <div class="row">
+                @foreach ($servicios as $servicio)
+                    <div class="col-md-3 mb-4">
+                        <div class="card" style="width: 18rem;">
+                            <img src="storage/{{ $servicio->image }}" class="card-img-top" alt="{{ $servicio->titulo }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $servicio->titulo }}</h5>
+                                <p class="card-text">{{ $servicio->descripcion }}</p>
+                                <a href="{{ route('servicios.show', $servicio) }}" class="btn btn-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        {{-- 
         @foreach ($servicios as $servicio)
             <tr>
                 <td>
                     @if ($servicio->image)
-                        {{-- <img src="storage/{{ $servicio->image }}" alt="{{ $servicio->titulo }}" width="50" height="50"> --}}
-                        {{-- <img src="{{ asset('storage/' . $servicio->image) }}" alt="{{ $servicio->titulo }}" width="50"
-                            height="50"> --}}
                         <div class="card" style="width: 18rem;">
                             <img src="storage/{{ $servicio->image }}" alt="{{ $servicio->titulo }}">
                             <div class="card-body">
@@ -35,6 +49,7 @@
                 </td>
             </tr>
         @endforeach
+ --}}
     @else
         <li>No existe ningun servicios</li>
     @endif
